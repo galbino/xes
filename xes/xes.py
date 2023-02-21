@@ -6,11 +6,9 @@ class Log():
     """ An XES log class for adding traces to.
     """
     def __init__(self):
-        self.CREATOR = "Python XES v1.2"
         self.log = ET.Element("log")
         self.log.set("xes.version", "1.0")
         self.log.set("xmlns", "http://www.xes-standard.org")
-        self.log.set("xes.creator", self.CREATOR)
 
         self.attributes = []
         self.traces = []
@@ -104,7 +102,6 @@ class Log():
         for classifier in self.classifiers:
             self.log.append(classifier.xml)
 
-        self.attributes.append(Attribute(type="string", key="creator", value=self.CREATOR))
         for attr in self.attributes:
             self.log.append(attr.xml)
 
@@ -119,10 +116,6 @@ class Log():
     def __str__(self):
         self.build_log()
         stuff = minidom.parseString(ET.tostring(self.log, "utf-8"))
-        c1 = stuff.createComment("Created by Python XES https://pypi.python.org/pypi/xes")
-        c2 = stuff.createComment("(c) Jonathan Sumrall - http://www.sumrall.nl")
-        stuff.insertBefore(c2,stuff.childNodes[0])
-        stuff.insertBefore(c1,stuff.childNodes[0])
 
         return stuff.toprettyxml("  ")
 class Event():
